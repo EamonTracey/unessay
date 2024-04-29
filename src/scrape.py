@@ -44,7 +44,7 @@ for recipe_url in recipe_urls:
     recipes.append(recipe_clean)
 
 # Store recipe information in a DataFrame.
-df = pd.DataFrame(recipes)
+recipes_df = pd.DataFrame(recipes)
 
 # Write the DataFrame to a file (recipes.csv).
-df.to_csv("data/recipes.csv", index=False)
+recipes_df.to_csv("data/recipes.csv", index=False)
