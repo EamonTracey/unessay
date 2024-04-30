@@ -8,29 +8,17 @@ from engine import recommend_recipes
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return render_template('home.html')
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-@app.route('/engine')
-def engine():
-    return render_template('engine.html')
+@app.route("/recommend", methods=["POST"])
+def get_recommendations():
+    keywords = request.json.get("keywords", "")
+    recommendations_df = recommend_recipes(keywords.split(","))
+    recommendations_list = recommendations_df.to_dict(orient="records")
+    return jsonify(recommendations_list)
 
-@app.route('/history')
-def history():
-    return render_template('history.html')
-
-@app.route('/recommend', methods=['POST'])
-def recommend():
-    keywords = request.form['keywords'].split(',')
-    # Call your function with the input keywords
-    recipes_df = recommend_recipes(keywords)
-    if recipes_df is not None and not recipes_df.empty:
-        recipes = recipes_df.to_dict('records')  # Convert DataFrame to list of dictionaries
-        return jsonify({'recipes': recipes})
-    else:
-        return jsonify({'message': "No recipes found for the given keywords."})
-
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True,port=8945)
 

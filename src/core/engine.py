@@ -17,13 +17,13 @@ def recommend_recipes(keywords, n=5):
     keywords = parse_ingredients(keywords)
 
     # Convert the ingredient keywords into a vector.
-    # Return None if none of the keywords are relevant.
+    # Return an empty DataFrame if none of the keywords are relevant.
     vectors_weighted = []
     for word in keywords:
         if word in embeddings.wv.index_to_key:
             vectors_weighted.append(embeddings.wv.get_vector(word) * ingredient_weight[word])
     if not vectors_weighted:
-        return None
+        return pd.DataFrame(columns=recipes_df.columns.to_list())
     keywords_vector = np.array(vectors_weighted).mean(axis=0)
     keywords_vector /= np.linalg.norm(keywords_vector)
 
