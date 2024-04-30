@@ -1,3 +1,5 @@
+import pickle
+
 import gensim
 import numpy as np
 import pandas as pd
@@ -25,7 +27,12 @@ def main():
     corpus = [" ".join(i) for i in corpus]
     tfidf = sklearn.feature_extraction.text.TfidfVectorizer()
     tfidf.fit(corpus)
-    ingredient_weight = {ingredient: tfidf.idf_[index] for ingredient, index in tfidf.vocabulary_.items()}
+    ingredient_weight = {
+        ingredient: tfidf.idf_[index]
+        for ingredient, index in tfidf.vocabulary_.items()
+    }
+    with open("models/ingredients.weight", "wb") as fp:
+        pickle.dump(ingredient_weight, fp)
 
     # Transform each recipe into a single, normalized vector.
     # The vector of is computed by weighting the
@@ -40,10 +47,8 @@ def main():
         recipe_vector = np.array(vectors_weighted).mean(axis=0)
         recipe_vector /= np.linalg.norm(recipe_vector)
         recipe_vectors.append(recipe_vector)
-
-    # Store the recipe vectors in a new DataFrame and save it.
-    recipes_df["vector"] = recipe_vectors
-    recipes_df.to_csv("data/recipes_vectorized.csv")
+    with open("models/recipes.vector", "wb") as fp:
+        pickle.dump(recipe_vectors, fp)
 
 if __name__ == "__main__":
     main()

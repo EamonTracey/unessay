@@ -5,7 +5,8 @@ import string
 import pandas as pd
 import nltk
 
-unwords = set(open("data/unwords.txt").read().splitlines())
+with open("data/unwords.txt") as fp:
+    unwords = fp.read().splitlines())
 def parse_ingredients(ingredients):
     # Remove anything inside parentheses.
     ingredients = [re.sub(r"\([^)]*\)", "", i) for i in ingredients]
