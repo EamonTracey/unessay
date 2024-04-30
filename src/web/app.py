@@ -1,13 +1,24 @@
+import sys
+
 import pandas as pd
 from flask import Flask, render_template, request, jsonify
 
+sys.path.append("src/core")
 from engine import recommend_recipes
 
 app = Flask(__name__)
 
 @app.route('/')
-def index():
-    return render_template('index.html')
+def home():
+    return render_template('home.html')
+
+@app.route('/engine')
+def engine():
+    return render_template('engine.html')
+
+@app.route('/history')
+def history():
+    return render_template('history.html')
 
 @app.route('/recommend', methods=['POST'])
 def recommend():
