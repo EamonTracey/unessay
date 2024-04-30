@@ -1,16 +1,17 @@
 document.getElementById('recommendationForm').addEventListener('submit', function(event) {
     event.preventDefault();
     var keywords = document.getElementById('keywords').value;
-    fetchRecommendations(keywords);
+    var numRecipes = document.getElementById('numRecipes').value;
+    fetchRecommendations(keywords, numRecipes);
 });
 
-function fetchRecommendations(keywords) {
+function fetchRecommendations(keywords, numRecipes) {
     fetch('/recommend', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ keywords: keywords })
+        body: JSON.stringify({ keywords: keywords, numRecipes: numRecipes })
     })
     .then(response => response.json())
     .then(data => displayRecommendations(data));
@@ -39,6 +40,13 @@ function displayRecommendations(data) {
             // Append link to recipe element
             recipeElement.appendChild(link);
 
+            // Create text overlay for "Go to recipe"
+            var goToRecipeText = document.createElement('div');
+            goToRecipeText.classList.add('go-to-recipe');
+            goToRecipeText.textContent = 'Go to recipe';
+            // Append text overlay to recipe element
+            recipeElement.appendChild(goToRecipeText);
+
             // Create heading for recipe name
             var heading = document.createElement('h3');
             heading.textContent = recipe.name;
@@ -49,7 +57,7 @@ function displayRecommendations(data) {
             recommendationsContainer.appendChild(recipeElement);
         });
     } else {
-        recommendationsContainer.innerHTML = '<p>No recipes found. Please try different ingredients.</p>';
+        recommendationsContainer.innerHTML = '<p>No recipes found. Please try different search words.</p>';
     }
 }
 

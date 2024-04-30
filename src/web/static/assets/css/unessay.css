@@ -1,0 +1,72 @@
+/* Unessay */
+
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+.search-form label {
+    margin-right: 10px; /* Add some space between label and input */
+}
+
+.search-form input[type="text"] {
+    flex: 1; /* Input field takes up remaining space */
+    margin-right: 10px; /* Add some space between input and button */
+}
+
+.search-form button {
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+/* Adjust the width of the dropdown menu */
+.search-form select {
+    width: 85px; /* Set the width of the dropdown menu */
+    margin-right: 10px; /* Add some space between the input and the button */
+}
+
+/* Add CSS to style the recommendations */
+.recommendations {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.recipe {
+    position: relative; /* Positioning context for absolute positioning */
+    width: 50%; /* Each recipe occupies 50% of the available width */
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.recipe h3 {
+    margin-top: 0;
+}
+
+.recipe img {
+    border-radius: 10px; /* Round the corners of the images */
+    width: 100%; /* Make sure the image fills its container */
+    cursor: pointer; /* Change cursor to pointer when hovering over image */
+    transition: opacity 0.3s; /* Add transition effect for opacity */
+}
+
+.recipe img:hover {
+    opacity: 0.8; /* Reduce opacity when hovered over */
+}
+
+.go-to-recipe {
+    position: absolute; /* Position text absolutely within recipe container */
+    top: 50%; /* Vertically center the text */
+    left: 50%; /* Horizontally center the text */
+    transform: translate(-50%, -50%); /* Center the text using translation */
+    color: white; /* Text color */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    padding: 5px 10px; /* Padding around text */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 14px; /* Text size */
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s; /* Add transition effect for opacity */
+}
+
+.recipe:hover .go-to-recipe {
+    opacity: 1; /* Show text when recipe is hovered over */
+}

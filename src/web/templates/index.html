@@ -10,6 +10,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <link rel="stylesheet" type="text/css" href="static/assets/css/main.css">
+        <link rel="stylesheet" type="text/css" href="static/assets/css/unessay.css">
 		<noscript><link rel="stylesheet" href="static/assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -52,11 +53,24 @@
                             <article id="engine">
                                 <h2 class="major">Recipe Engine</h2>
                                 <!-- Add a form for user input -->
-                                <p>The recipe engine accepts a list of ingredients separated by commas. Then, through natural language processing, the program interprets the ingredients and finds relevant recipes that you can follow that utilize the ingredients. All recipes are from professional cook <a href="https://laurainthekitchen.com">Laura Vitale</a>. Try it out!
+                                <p>The recipe engine accepts a list of ingredients separated by commas. Then, through natural language processing, the program interprets the ingredients and finds relevant recipes which utilize the ingredients. All recipes are from professional cook <a href="https://laurainthekitchen.com">Laura Vitale</a>. Try it out!
                                 <form id="recommendationForm", class="search-form">
+                                    <select id="numRecipes" name="numRecipes">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4" selected>4</option> <!-- Default value -->
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
                                     <input type="text" id="keywords" name="keywords" autocomplete="off" required>
                                     <button type="submit">Get Recipes</button>
                                 </form>
+
                                 <!-- Container to display recommendations -->
                                 <div id="recommendations" class="recommendations"></div>
                             </article>
