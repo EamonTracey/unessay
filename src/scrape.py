@@ -26,25 +26,32 @@ def get_recipe_urls(page):
         recipe_urls.append(link.get("href"))
     return recipe_urls
 
-# Scrape all recipe URLs (pages 1 - 73)
-recipe_urls = []
-for page in range(1, 74):
-    urls = get_recipe_urls(page)
-    recipe_urls.extend(urls)
+def main()
+    # Scrape all recipe URLs (pages 1 - 73)
+    recipe_urls = []
+    for page in range(1, 74):
+        urls = get_recipe_urls(page)
+        recipe_urls.extend(urls)
 
-# Scrape the information from each recipe.
-recipes = []
-for recipe_url in recipe_urls:
-    recipe = get_recipe(BASE_URL + recipe_url)
-    recipe_clean = {}
-    recipe_clean["name"] = recipe["name"].strip()
-    recipe_clean["link"] = BASE_URL + recipe_url.strip()
-    recipe_clean["image"] = recipe["image"].strip()
-    recipe_clean["ingredients"] = list(map(str.strip, recipe["recipeIngredient"]))
-    recipes.append(recipe_clean)
+    # Scrape the information from each recipe.
+    recipes = []
+    for recipe_url in recipe_urls:
+        try:
+            recipe = get_recipe(BASE_URL + recipe_url)
+            recipe_clean = {}
+            recipe_clean["name"] = recipe["name"].strip()
+            recipe_clean["link"] = BASE_URL + recipe_url.strip()
+            recipe_clean["image"] = recipe["image"].strip()
+            recipe_clean["ingredients"] = list(map(str.strip, recipe["recipeIngredient"]))
+            recipes.append(recipe_clean)
+        except Exception:
+            continue
 
-# Store recipe information in a DataFrame.
-recipes_df = pd.DataFrame(recipes)
+    # Store recipe information in a DataFrame.
+    recipes_df = pd.DataFrame(recipes)
 
-# Write the DataFrame to a file (recipes.csv).
-recipes_df.to_csv("data/recipes.csv", index=False)
+    # Write the DataFrame to a file (recipes.csv).
+    recipes_df.to_csv("data/recipes.csv", index=False)
+
+if __name__ == "__main__":
+    main()
