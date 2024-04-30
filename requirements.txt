@@ -2,3 +2,6 @@ bs4
 pandas
 requests
 nltk
+gensim
+scipy==1.12.0
+scikit-learn
