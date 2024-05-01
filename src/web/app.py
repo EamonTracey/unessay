@@ -22,4 +22,4 @@ def get_recommendations():
     return jsonify(recommendations_list)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="localhost", debug=True, port=3131)
