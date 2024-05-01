@@ -35,7 +35,8 @@
 							<ul>
 								<li><a href="#context">Context</a></li>
 								<li><a href="#engine">Recipe Engine</a></li>
-								<li><a href="#sources">Sources</a></li>
+                                <li><a href="#code">Engine Code</a></li>
+								<li><a href="#sources">Sources</a></li> 
 							</ul>
 						</nav>
 					</header>
@@ -48,9 +49,22 @@
 								<h2 class="major">Context</h2>
 								<span class="image main"><img src="static/images/banner.jpg" alt="" /></span>
                                 <p>Technology has profoundly shaped human production, consumption, and interaction with food. From the domestication of fire to the development of artificial intelligence, technological advancements have continually revolutionized our relationship with food. In my unessay, I explore the history of food technology and how it has evolved from hundreds of thousands of years ago to today.</p>
-                                <p>At the centerpiece of my unessay is a recipe search engine which I developed in the Python programming language. The recipe engine takes as input a list of ingredients and outputs the most relevant recipes that you can follow if you have those ingredients. The recipes have been scraped from professional, Italian cook Laura Vitale’s website. I implemented well-known machine learning and natural language processing techniques to match the output recipes with the input ingredients most accurately. I have provided a brief, more technical description of the recipe engine here. My recipe engine reflects the technological evolution of food and how human interaction with food continues to develop. Advancements in computing, internet connectivity, and data processing have unlocked new ways to share and discover recipes. The engine demonstrates the high availability of culturally diverse recipes as it supports over one thousand unique Laura Vitale recipes. Further, the engine makes consumption easier as it helps you answer the question: what breakfast/lunch/dinner/snack can I make now with what I have? Finally, the recipe engine demonstrates how we can continue to leverage new technology, such as machine learning, to enhance our food experiences.</p>
-                                <p>As part of my unessay, I researched multiple technologies that have shaped or are shaping human consumption, production, and interaction with food. Below is my brief yet comprehensive timeline of such technologies, beginning with fire and ending with artificial intelligence.</p>
+                                <p>At the centerpiece of my unessay is a <a href="#engine">recipe search engine</a> which I developed in the Python programming language. The recipe engine takes as input a list of ingredients and outputs the most relevant recipes that you can follow if you have those ingredients. The recipes have been scraped from professional, Italian cook Laura Vitale’s website. I implemented well-known machine learning and natural language processing techniques to match the output recipes with the input ingredients most accurately. My recipe engine reflects the technological evolution of food and how human interaction with food continues to develop. Advancements in computing, internet connectivity, and data processing have unlocked new ways to share and discover recipes. The engine demonstrates the high availability of culturally diverse recipes as it supports over one thousand unique Laura Vitale recipes. Further, the engine makes consumption easier as it helps you answer the question: what breakfast/lunch/dinner/snack can I make now with what I have? Finally, the recipe engine demonstrates how we can continue to leverage new technology, such as machine learning, to enhance our food experiences.</p>
+
+                                <h2 class="major">How the Recipe Engine Works</h2>
+
+                                <p>The goal of the recipe engine is to help users know what food they can cook with the ingredients they currently have. The engine takes as input a comma-separated list of ingredients and outputs 1-10 recipes that best match those ingredients.</p>
+                                <p>The first step was to acquire a bank of recipes for the engine to recommend to the user. There are many online cookbooks; I chose to use Laura Vitale’s recipes since I am familiar with her work. Thus, I used the Python requests and BeautifulSoup libraries to scrape almost two thousand recipes from her website. I parsed each recipe webpage to acquire the name and list of ingredients of each recipe.</p>
+
+                                <p>Step two involved filtering the scraped data. The lists of ingredients in Laura Vitale’s recipes contain many extraneous words (such as measurements) that are not useful when searching for a recipe. Words like “the”, “unsweetened”, and “blue” ought to be filtered from the dataset. Thus, I wrote a parser that accepts a list of ingredients and outputs a filtered list, removing unnecessary words, converting everything to lowercase, eliminating non-alphabetic characters, etc.</p>
+
+                                <p>The third step was to use natural language processing to convert the words and ingredients lists into a form that can easily be compared to score similarity/relevance. First, I employed a Word2Vec model to create word embeddings for all the ingredients present in my dataset. The Word2Vec algorithm infers words’ relations to each other and outputs a high-dimensional vector (list of numbers) that corresponds to those words. The vectors of two words point in similar directions if they are related. For example, “parmesan” and “mozzarella” would point in similar directions while “chocolate” would point in a much different direction. Once each ingredient had a vector embedding, I also converted the ingredients list of each recipe to a vector. I vectorized each list of ingredients by summing the vectors and computing the mean across each dimension. To make search engine results better, I utilized a Text-Frequency-Inverse-Document-Frequency (TFIDF) algorithm to weigh each ingredient embedding. TFIDF scores the importance of a word in a collection of documents; in our case, common words like “vanilla” and “chicken” are less impactful than rarer words like “pepperoni” and “Chinese.”</p>
+
+                                <p>The fourth and final step was to implement the recommendation system. When the user inputs a list of ingredients, the ingredients are parsed and vectorized in the exact same way as the Laura Vitale recipes. Thus, I have the user’s ingredients in the form of a high-dimensional vector. Then, I compute the cosine similarity of the user’s ingredients with each dataset recipe’s ingredients. The cosine similarity measures how small the angle between two n-dimensional vectors is. Similar recipes score high and dissimilar recipes score low. The recommendation algorithm sorts the dataset recipes according to the cosine similarity and presents the top recipes to the user.</p>
+
                                 <h2 class="major">Food Technology Timeline</h2>
+
+                                <p>In my unessay, I desired a deeper understanding of how technology has changed humanity's relationship with food. So, I researched multiple technologies that have shaped or are shaping human consumption, production, and interaction with food. Below, I created a brief timeline of such technologies, beginning with fire and ending with artificial intelligence.</p>
 
                                 <div class="section odd clearfix">
                                     <div class="image">
@@ -58,90 +72,54 @@
                                     </div>
                                     <div class="content">
                                         <h3>Fire</h3>
-                                        <p>The domestication of fire, a transformative event in human history, enabled early humans to cook food, making it safer and more nutritious. This innovation not only facilitated culinary exploration but also played a crucial role in the development of social organization and primitive law. As communities formed around central hearths, fire became deeply intertwined with religious and cultural practices, serving as a focal point for rituals and communal gatherings. Millennia of experimentation and refinement have solidified fire as a fundamental tool in human civilization, shaping everything from architecture to industry. Though modern technologies have expanded our capabilities, the legacy of fire endures as a testament to human ingenuity and progress.</p>
+                                        <p>The domestication of fire likely occurred over 1 million years ago by early hominid species living in Africa. Fire revolutionized food preparation, especially since cooking meat makes it more digestible, more flavorful, and safer to consume. The domestication of fire marks a critical milestone in how humans consume food.</p>
                                     </div>
                                 </div>
 
                                 <div class="section even clearfix">
                                     <div class="content">
                                         <h3>Agriculture</h3>
-                                        <p>The transition from hunting and gathering to agriculture around 10,000 years ago brought about profound changes in human society. Agriculture replaced foraging as the primary means of sustenance, leading to rapid population growth and denser settlements. Early theories attributed this shift to technological innovation, but later models emphasized diffusion and environmental factors. While some hypotheses suggest increasing population pressure or environmental changes drove the transition, others propose that the necessary knowledge for agriculture existed long before its widespread adoption. This transition marked a pivotal moment in human history, shaping the trajectory of civilization and laying the groundwork for modern societies.</p>
+                                        <p>Agriculture emerged around 10,000 B.C. in multiple regions, including Mesopotamia, China, and the Andes. Humans shifted from nomadic hunter-gatherer groups to settled communities as they cultivated crops and raised livestock. Agriculture has transformed the production of food and enabled complex societies to develop.</p>
                                     </div>
                                     <div class="image">
                                         <img src="static/images/agriculture.jpg" alt="">
                                     </div>
                                 </div>
-                                <div class="section odd clearfix">
-                                    <div class="image">
-                                        <img src="static/images/irrigation.jpg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h3>Irrigation Systems</h3>
-                                        <p>The development of irrigation systems is intricately tied to the history of agriculture and human civilization. Scholars debate whether irrigation evolved from practices based on seasonal precipitation or developed concurrently with agriculture. As human settlements formed in the late Paleolithic and Mesolithic periods, diverse economic-cultural types emerged, from hunters and gatherers to settled fishers. The transition to regular cultivation and animal husbandry, known as the "Neolithic revolution," marked a pivotal moment in human history. Archaeological studies reveal independent centers of plant domestication, coinciding with proposed centers of origin by scholars like N.I. Vavilov. These centers, including Southwest Asia and the Mediterranean, played crucial roles in the spread of irrigation techniques. Regions like South Asia, with India and China as key centers, also contributed significantly to agricultural innovation.</p>
-                                    </div>
-                                </div>
 
-                                <div class="section even clearfix">
-                                    <div class="content">
-                                        <h3>Metal Tools</h3>
-                                        <p>The advent of metal tools, including the plow and sickle, marked a transformative phase in human agriculture, emerging alongside the transition from the Stone Age to metalworking. While the exact origins of these tools remain elusive, their development likely coincided with advancements in metallurgy. Metal tools provided farmers with increased durability and efficiency compared to their stone predecessors, enabling larger-scale farming and higher crop yields. The introduction of these tools revolutionized agricultural practices, paving the way for the expansion of civilizations and the development of complex societies. Their widespread adoption fundamentally altered human interactions with the land, propelling agricultural productivity to new heights and shaping the course of human history.</p>
-                                    </div>
-                                    <div class="image">
-                                        <img src="static/images/sickle.jpg" alt="">
-                                    </div>
-                                </div>
                                 <div class="section odd clearfix">
                                     <div class="image">
                                         <img src="static/images/refrigeration.jpg" alt="">
                                     </div>
                                     <div class="content">
                                         <h3>Refrigeration</h3>
-                                        <p>Thomas Moore is credited with inventing the first icebox, patenting his design in 1870. This early device, featuring wooden construction insulated with cork or sawdust and a compartment for ice, transformed how perishable foods were stored. However, it was the advent of mechanical refrigeration that truly revolutionized food preservation. In 1805, Oliver Evans pioneered the concept, but it was Carl von Linde who made significant strides in refrigeration technology, developing the first practical refrigerator in 1876. This invention, later refined by Fred W. Wolf Jr. with the introduction of the first electric refrigerator in 1913, marked a pivotal moment in food storage. Refrigeration technology has since become ubiquitous, fundamentally altering how food is preserved, stored, and distributed, leading to unprecedented variety and accessibility of perishable goods worldwide.</p>
+                                        <p>The first icebox was invented by American farmer Thomas Moore in 1802, and the first practical fridge was developed by American inventor Oliver Evans in 1805. Refrigeration allows perishable goods to be stored (without spoilage) for longer. This has enabled the transportation of food across distances, and refrigerators are a staple in American homes.</p>
                                     </div>
                                 </div>
 
                                 <div class="section even clearfix">
                                     <div class="content">
-                                        <h3>Canning</h3>
-                                        <p>Canned food, popularized by French chef Nicolas Appert in the early 19th century, revolutionized the preservation of food by sealing it in airtight containers. His innovative method, which involved heating food in sealed glass jars, paved the way for the modern canning industry. Later, Englishman Peter Durand patented the tin can in 1810, further advancing the technology and making mass production feasible. Today, the legacy of these pioneers endures, with canned food serving as a convenient and reliable option for consumers worldwide.</p>
+                                        <h3>Tractor</h3>
+                                        <p>In 1892, American engineer John Froelich invented the tractor, thus replacing animal-drawn agricultural machines. Tractors allow farmers to cultivate land more effectively, leading to higher crop yields and the ability to feed the growing population. The tractor paved the way for mechanized farming and modern technology in food production.</p>
                                     </div>
-                                    <div class="image">
-                                        <img src="static/images/canning.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="section odd clearfix">
                                     <div class="image">
                                         <img src="static/images/tractor.png" alt="">
                                     </div>
-                                    <div class="content">
-                                        <h3>Tractor</h3>
-                                        <p>The tractor, a quintessential icon of modern agriculture, emerged from the innovation of American engineer John Froelich in 1892. His invention of the first gasoline-powered tractor revolutionized farming practices, replacing animal power and manual labor with mechanized efficiency. This breakthrough not only transformed the landscape of agriculture but also had profound implications for food production. Tractors significantly increased farm productivity, allowing for larger-scale cultivation, faster planting and harvesting, and more efficient land management. As a result, they played a pivotal role in the mechanization of agriculture, contributing to increased yields and the ability to feed growing populations around the world. Today, tractors remain indispensable tools in modern farming, illustrating the enduring impact of Froelich's pioneering invention on global food systems.</p>
-                                    </div>
                                 </div>
 
-                                <div class="section even clearfix">
-                                    <div class="content">
-                                        <h3>Microwave</h3>
-                                        <p>The microwave oven, a staple in kitchens worldwide, owes its invention to Percy Spencer, an American engineer working for Raytheon Corporation, who discovered the cooking power of microwaves by accident in 1945. While conducting experiments with a magnetron, Spencer noticed that a candy bar in his pocket had melted. Realizing the potential for heating food with microwave energy, he developed the first microwave oven, which was commercially released in 1947 as the "Radarange." This invention revolutionized food preparation by providing a quick and convenient method for cooking, reheating, and defrosting food. The microwave's ability to cook food rapidly and evenly has transformed culinary practices, influencing everything from home cooking to the food industry. Today, microwaves are ubiquitous in households and food establishments, illustrating how technological innovations continue to shape the way we prepare and consume food.</p>
-                                    </div>
-                                    <div class="image">
-                                        <img src="static/images/microwave.jpg" alt="">
-                                    </div>
-                                </div>
                                 <div class="section odd clearfix">
                                     <div class="image">
                                         <img src="static/images/genetic.jpg" alt="">
                                     </div>
                                     <div class="content">
                                         <h3>Genetic Engineering</h3>
-                                        <p>Genetic engineering, a groundbreaking scientific field, emerged in the 1970s with the development of recombinant DNA technology. This technique allowed scientists to manipulate and modify the genetic material of organisms, ushering in a new era of biotechnology. One of the earliest applications of genetic engineering was in agriculture, where scientists aimed to enhance crop traits such as yield, pest resistance, and nutritional content. The first genetically modified (GM) food product, the Flavr Savr tomato, was approved for commercial production in 1994. Since then, genetic engineering has revolutionized food production, leading to the creation of various genetically modified crops such as corn, soybeans, and cotton. These crops have been engineered to tolerate herbicides, resist pests, and improve nutritional profiles. While genetic engineering has sparked debates over safety and ethics, it has undeniably transformed the agricultural landscape and influenced the availability, quality, and sustainability of food worldwide.</p>
+                                        <p>Genetic engineering, developed in the late 20th century, allows scientists to modify the genetic makeup of crops, perhaps to make them tastier, more pest-resistant, less likely to spoil etc. In 1994, the FDA approved the Flavr Savr tomato, a genetically engineered product, as safe to eat; today roughly 80% of processed food contains GMOs. Genetic engineering technology has transformed food production as consumption, enhancing food quality and sustainability.</p>
                                     </div>
                                 </div>
 
                                 <div class="section even clearfix">
                                     <div class="content">
                                         <h3>Artificial Intelligence</h3>
-                                        <p>Artificial intelligence (AI) is revolutionizing the food industry in numerous ways. One significant application is in precision agriculture, where AI-powered systems analyze data from sensors, satellites, and drones to optimize farming practices, such as irrigation, fertilization, and pest control. AI algorithms can also predict crop yields, detect diseases early, and recommend tailored interventions, thereby increasing productivity and sustainability. In food manufacturing, AI enables predictive maintenance of machinery, quality control, and optimization of production processes to minimize waste and ensure product consistency. Additionally, AI-driven platforms are transforming the way consumers interact with food, from personalized recipe recommendations based on dietary preferences and nutritional needs to smart kitchen appliances that automate cooking tasks. Overall, AI is reshaping the entire food supply chain, from farm to fork, by enhancing efficiency, quality, and innovation.</p>
+                                        <p>Today, the development of artificial intelligence is booming, and people are applying the technology to all facets of life, including food. In precision agriculture, AI-equipped drones and sensors monitor crop health to optimize irrigation and fertilization. AI-driven quality control systems ensure high-quality produce reaches consumers and waste is minimized. AI-powered recipe generation algorithms (similar to a recipe engine!) enable chefs to expand their culinary skills. I am excited to see how AI continues to benefit humans' production and consumption of food.</p>
                                     </div>
                                     <div class="image">
                                         <img src="static/images/ai.png" alt="">
@@ -154,7 +132,7 @@
                             <article id="engine">
                                 <h2 class="major">Recipe Engine</h2>
                                 <!-- Add a form for user input -->
-                                <p>The recipe engine accepts a list of ingredients separated by commas. Then, through natural language processing, the program interprets the ingredients and finds relevant recipes which utilize the ingredients. All recipes are from professional cook <a href="https://laurainthekitchen.com">Laura Vitale</a>. Try it out!
+                                <p>Do you have a bunch of ingredients but do not know what food to make? The recipe engine can help you! The recipe engine accepts a list of ingredients separated by commas. Then, through natural language processing, the program interprets the ingredients and finds relevant recipes which utilize the ingredients. All recipes are from professional cook <a href="https://laurainthekitchen.com">Laura Vitale</a>. Try it out!
                                 <form id="recommendationForm", class="search-form">
                                     <select id="numRecipes" name="numRecipes">
                                         <option value="1">1</option>
@@ -176,6 +154,242 @@
                                 <div id="recommendations" class="recommendations"></div>
                             </article>
 
+                        <!-- Code -->
+                        <article id="code">
+                            <h2 class="major">Code</h2>
+
+                            <pre><code>import json
+
+from bs4 import BeautifulSoup
+import pandas as pd
+import requests
+
+BASE_URL = "https://www.laurainthekitchen.com/"
+RECIPE_SEARCH_URL = BASE_URL + "recipe-search.php?screen={}"
+
+def get_recipe(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    script = soup.find("script", type="application/ld+json").text
+    script.replace("<script type=\"application/ld+json\">", "")
+    script.replace("</script>", "")
+    recipe = json.loads(script, strict=False)
+    return recipe
+
+def get_recipe_urls(page):
+    recipe_urls = []
+    response = requests.get(RECIPE_SEARCH_URL.format(page))
+    soup = BeautifulSoup(response.text, "html.parser")
+    divs = soup.find_all("div", class_="cs-recipe-details-button")
+    for div in divs:
+        link = div.find("a")
+        recipe_urls.append(link.get("href"))
+    return recipe_urls
+
+def main()
+    # Scrape all recipe URLs (pages 1 - 73)
+    recipe_urls = []
+    for page in range(1, 74):
+        urls = get_recipe_urls(page)
+        recipe_urls.extend(urls)
+
+    # Scrape the information from each recipe.
+    recipes = []
+    for recipe_url in recipe_urls:
+        try:
+            recipe = get_recipe(BASE_URL + recipe_url)
+            recipe_clean = {}
+            recipe_clean["name"] = recipe["name"].strip()
+            recipe_clean["link"] = BASE_URL + recipe_url.strip()
+            recipe_clean["image"] = recipe["image"].strip()
+            recipe_clean["ingredients"] = list(map(str.strip, recipe["recipeIngredient"]))
+            recipes.append(recipe_clean)
+        except Exception:
+            continue
+
+    # Store recipe information in a DataFrame.
+    recipes_df = pd.DataFrame(recipes)
+
+    # Write the DataFrame to a file (recipes.csv).
+    recipes_df.to_csv("data/recipes.csv", index=False)
+
+if __name__ == "__main__":
+    main()</code></pre>
+
+                            <pre><code>import ast
+import re
+import string
+
+import pandas as pd
+import nltk
+
+with open("data/unwords.txt") as fp:
+    unwords = fp.read().splitlines()
+def parse_ingredients(ingredients):
+    # Remove anything inside parentheses.
+    ingredients = [re.sub(r"\([^)]*\)", "", i) for i in ingredients]
+
+    # Craft a list of words.
+    ingredients = " ".join(ingredients).split()
+    ingredients = list(set(ingredients))
+    
+    # Remove punctuation.
+    ingredients = [i.translate(str.maketrans("", "", string.punctuation)) for i in ingredients]
+
+    # Remove anything with wacky characters.
+    ingredients = [i for i in ingredients if i.isalpha()]
+
+    # Convert everything to lowercase.
+    ingredients = [i.lower() for i in ingredients]
+
+    # Lemmatize all the words.
+    lemmatizer = nltk.stem.WordNetLemmatizer()
+    ingredients = [lemmatizer.lemmatize(i) for i in ingredients]
+
+    # Remove letters.
+    ingredients = [i for i in ingredients if len(i) > 1]
+
+    # Remove unwords.
+    ingredients = [i for i in ingredients if i not in unwords]
+
+    # Uniquify the ingredients.
+    ingredients = list(set(ingredients))
+
+    return ingredients
+
+def main():
+    # Load the recipes and ingredients.
+    recipes_df = pd.read_csv("data/recipes.csv")
+    ingredients_list = recipes_df["ingredients"].to_list()
+    ingredients_list = [ast.literal_eval(i) for i in ingredients_list]
+
+    # Parse the ingredients.
+    ingredients_parsed_list = []
+    for ingredients in ingredients_list:
+        ingredients_parsed = parse_ingredients(ingredients)
+        ingredients_parsed = " ".join(ingredients_parsed)
+        ingredients_parsed_list.append(ingredients_parsed)
+    recipes_df["ingredients"] = ingredients_parsed_list
+
+    # Drop recipes with no ingredients.
+    recipes_df = recipes_df.drop(recipes_df[recipes_df["ingredients"] == ""].index)
+    recipes_df = recipes_df.dropna(subset=["ingredients"])
+
+    # Remove "Recipe" from the name of each recipe.
+    name_list = recipes_df["name"].to_list()
+    name_list = [name.rstrip("Recipe").strip() for name in name_list]
+    recipes_df["name"] = name_list
+
+    # Write the DataFrame to a file (recipes_parsed.csv).
+    recipes_df.to_csv("data/recipes_parsed.csv", index=False)
+
+if __name__ == "__main__":
+    main()</code></pre>
+
+                            <pre><code>import pickle
+
+import gensim
+import numpy as np
+import pandas as pd
+import sklearn.feature_extraction
+
+def main():
+    # Load the recipes DataFrame.
+    recipes_df = pd.read_csv("data/recipes_parsed.csv")
+
+    # Gather the ingredients into a corpus.
+    corpus = recipes_df["ingredients"].to_list()
+    corpus = [sorted(ingredients.split()) for ingredients in corpus]
+
+    # Utilize the word2vec model to capture word embeddings.
+    # This transforms each ingredient (word) into a 100-dimensional vector.
+    embeddings = gensim.models.word2vec.Word2Vec(
+        corpus,
+        vector_size=100,
+        window=7,
+        min_count=1
+    )
+    embeddings.save("models/ingredients.embedding")
+
+    # Use TDIDF to determine the weight (importance) of each ingredient.
+    corpus = [" ".join(i) for i in corpus]
+    tfidf = sklearn.feature_extraction.text.TfidfVectorizer()
+    tfidf.fit(corpus)
+    ingredient_weight = {
+        ingredient: tfidf.idf_[index]
+        for ingredient, index in tfidf.vocabulary_.items()
+    }
+    with open("models/ingredients.weight", "wb") as fp:
+        pickle.dump(ingredient_weight, fp)
+
+    # Transform each recipe into a single, normalized vector.
+    # The vector of is computed by weighting the
+    # word embeddings of the ingredients, and then
+    # computing the mean across each dimension.
+    recipe_vectors = []
+    for ingredients in corpus:
+        ingredients = ingredients.split()
+        vectors_weighted = []
+        for ingredient in ingredients:
+            vectors_weighted.append(embeddings.wv.get_vector(ingredient) * ingredient_weight[ingredient])
+        recipe_vector = np.array(vectors_weighted).mean(axis=0)
+        recipe_vector /= np.linalg.norm(recipe_vector)
+        recipe_vectors.append(recipe_vector)
+    with open("models/recipes.vector", "wb") as fp:
+        pickle.dump(recipe_vectors, fp)
+
+if __name__ == "__main__":
+    main()</code></pre>
+
+                            <pre><code>import pickle
+
+import gensim
+import numpy as np
+import pandas as pd
+
+from parse_ingredients import parse_ingredients
+
+recipes_df = pd.read_csv("data/recipes_parsed.csv")
+embeddings = gensim.models.word2vec.Word2Vec.load("models/ingredients.embedding")
+with open("models/ingredients.weight", "rb") as fp:
+    ingredient_weight = pickle.load(fp)
+with open("models/recipes.vector", "rb") as fp:
+    recipe_vectors = pickle.load(fp)
+def recommend_recipes(keywords, n=5):
+    # Parse the input.
+    keywords = parse_ingredients(keywords)
+
+    # Convert the ingredient keywords into a vector.
+    # Return an empty DataFrame if none of the keywords are relevant.
+    vectors_weighted = []
+    for word in keywords:
+        if word in embeddings.wv.index_to_key:
+            vectors_weighted.append(embeddings.wv.get_vector(word) * ingredient_weight[word])
+    if not vectors_weighted:
+        return pd.DataFrame(columns=recipes_df.columns.to_list())
+    keywords_vector = np.array(vectors_weighted).mean(axis=0)
+    keywords_vector /= np.linalg.norm(keywords_vector)
+
+    # Compute the similarity of the keywords with all recipes.
+    # We do this via the dot product. Since the vectors are normalized,
+    # the dot product computes the cosine of the angle between the vectors,
+    # which is maximized when the vectors are closer together.
+    similarities = [
+        np.dot(keywords_vector, recipe_vector)
+        for recipe_vector in recipe_vectors
+    ]
+
+    # Acquire the indices of the n most similar recipes.
+    recommendations = np.argsort(similarities)[-n:][::-1]
+
+    # Create a new DataFrame with the recommended recipes.
+    recommendations_df = recipes_df.iloc[recommendations]
+    recommendations_df.reset_index(drop=True)
+
+    return recommendations_df</code></pre>
+
+                        </article>
+
 						<!-- About -->
 							<article id="sources">
 								<h2 class="major">Sources</h2>
@@ -185,6 +399,9 @@
                                     <li>Hough, Walter. “Fire and Human Civilization.” Proceedings of the American Philosophical Society 71, no. 6 (1932): 403–6. http://www.jstor.org/stable/984649.</li>
                                     <li>Locay, Luis. “From Hunting and Gathering to Agriculture.” Economic Development and Cultural Change 37, no. 4 (1989): 737–56. http://www.jstor.org/stable/1154126.</li>
                                     <li>W. J. Stelpflug. “The Food Industry and the Part That Refrigeration Plays in It.” The Analysts Journal 6, no. 4 (1950): 37–39. http://www.jstor.org/stable/4467827.</li>
+                                    <li>https://constellate.org/docs/what-is-tf-idf</li>
+                                    <li>https://scikit-learn.org/stable/modules/feature_extraction.html</li>
+                                    <li>https://towardsdatascience.com/a-word2vec-implementation-using-numpy-and-python-d256cf0e5f28</li>
                                 </ul>
 							</article>
 
